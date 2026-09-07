@@ -1,10 +1,10 @@
 import Foundation
 
-protocol BRBLEDataWriting: AnyObject {
+public protocol BRBLEDataWriting: AnyObject {
     func write(_ data: Data) throws
 }
 
-protocol BRBLENotifyControlling: AnyObject {
+public protocol BRBLENotifyControlling: AnyObject {
     func setNotifyEnabled(_ enabled: Bool, timeout: TimeInterval) async throws
 }
 

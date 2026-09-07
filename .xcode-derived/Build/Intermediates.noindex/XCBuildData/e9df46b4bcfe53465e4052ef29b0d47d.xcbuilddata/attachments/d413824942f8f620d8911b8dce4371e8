@@ -1,0 +1,49 @@
+{
+  "" : {
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRBluetoothLibDemo-primary.dia",
+    "emit-module-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRBluetoothLibDemo-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRBluetoothLibDemo-primary-emit-module.dia",
+    "pch" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRBluetoothLibDemo-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRBluetoothLibDemo-primary.swiftdeps"
+  },
+  "/Users/admin/ble-iOS/Example/BRBluetoothLibDemo/BRDemoApp.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoApp.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoApp.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoApp.dia",
+    "index-unit-output-path" : "/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoApp.o",
+    "llvm-bc" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoApp.bc",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoApp.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoApp.swiftdeps",
+    "swiftmodule" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoApp~partial.swiftmodule"
+  },
+  "/Users/admin/ble-iOS/Example/BRBluetoothLibDemo/BRDemoBluetoothBridge.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoBluetoothBridge.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoBluetoothBridge.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoBluetoothBridge.dia",
+    "index-unit-output-path" : "/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoBluetoothBridge.o",
+    "llvm-bc" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoBluetoothBridge.bc",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoBluetoothBridge.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoBluetoothBridge.swiftdeps",
+    "swiftmodule" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoBluetoothBridge~partial.swiftmodule"
+  },
+  "/Users/admin/ble-iOS/Example/BRBluetoothLibDemo/BRDemoContentView.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoContentView.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoContentView.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoContentView.dia",
+    "index-unit-output-path" : "/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoContentView.o",
+    "llvm-bc" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoContentView.bc",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoContentView.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoContentView.swiftdeps",
+    "swiftmodule" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoContentView~partial.swiftmodule"
+  },
+  "/Users/admin/ble-iOS/Example/BRBluetoothLibDemo/BRDemoViewModel.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoViewModel.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoViewModel.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoViewModel.dia",
+    "index-unit-output-path" : "/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoViewModel.o",
+    "llvm-bc" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoViewModel.bc",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoViewModel.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoViewModel.swiftdeps",
+    "swiftmodule" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/BRBluetoothLibDemo.build/Debug-iphoneos/BRBluetoothLibDemo.build/Objects-normal/arm64/BRDemoViewModel~partial.swiftmodule"
+  }
+}

@@ -64,6 +64,18 @@ final class ProtocolParserTests: XCTestCase {
         }
     }
 
+    func testWifiAudioPayloadUsesOneKilobyteProtocolLimit() throws {
+        let parser = BRProtocolParser()
+        let frame = try parser.encodeWifiPacket(.syncFileData, payload: Data(repeating: 0xAA, count: BRWifiSocketConstants.maxAudioPayloadLength + 1), sequence: 1)
+
+        XCTAssertThrowsError(try parser.decodeWifiPackets(frame)) { error in
+            guard case BRSDKError.parseFailed(let message) = error else {
+                return XCTFail("Expected parseFailed, got \(error)")
+            }
+            XCTAssertTrue(message.contains("1024"))
+        }
+    }
+
     func testWifiDecoderHandlesNoiseMultipleFramesAndTrailingPartial() throws {
         let parser = BRProtocolParser()
         let first = try parser.encodeWifiPacket(.getBattery, payload: Data([88]), sequence: 1)

@@ -14,6 +14,7 @@ final class WifiTransport: CommandTransport, @unchecked Sendable {
     private var receiveBuffer = Data()
     private var receiveHandler: ((BRPacket) -> Void)?
     private var outboundWriter: ((Data) async throws -> Void)?
+    private var openHandler: (() async throws -> Void)?
     private var host = BRWifiSocketConstants.host
     private var port = BRWifiSocketConstants.port
     #if canImport(Network)
@@ -43,7 +44,25 @@ final class WifiTransport: CommandTransport, @unchecked Sendable {
         }
     }
 
+    func setOpenHandlerForTesting(_ handler: @escaping () async throws -> Void) {
+        lock.br_withLock {
+            openHandler = handler
+            stateStorage = .idle
+        }
+    }
+
     func open() async throws {
+        if let handler = lock.br_withLock({ openHandler }) {
+            lock.br_withLock { stateStorage = .opening }
+            do {
+                try await handler()
+                lock.br_withLock { stateStorage = .ready }
+            } catch {
+                lock.br_withLock { stateStorage = .failed }
+                throw error
+            }
+            return
+        }
         #if canImport(Network)
         let target = lock.br_withLock { (host, port) }
         let connection = NWConnection(host: NWEndpoint.Host(target.0), port: NWEndpoint.Port(rawValue: target.1)!, using: .tcp)

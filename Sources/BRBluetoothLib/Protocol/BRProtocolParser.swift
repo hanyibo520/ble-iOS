@@ -79,9 +79,11 @@ final class BRProtocolParser {
                   let payloadIndex = data.index(crcIndex, offsetBy: 2, limitedBy: data.endIndex) else {
                 break
             }
+            let command = parseCommand(firstByte: data[commandIndex], secondByte: data[data.index(after: commandIndex)])
             let payloadLength = Int(readLE32(from: data, at: lengthIndex))
-            guard payloadLength <= BRWifiSocketConstants.maxPayloadLength else {
-                throw BRSDKError.parseFailed(message: "WiFi packet payload length exceeds 40960 bytes.")
+            let maxPayloadLength = maxWifiPayloadLength(for: command)
+            guard payloadLength <= maxPayloadLength else {
+                throw BRSDKError.parseFailed(message: "WiFi packet payload length exceeds \(maxPayloadLength) bytes.")
             }
             guard let footerIndex = data.index(payloadIndex, offsetBy: payloadLength, limitedBy: data.endIndex),
                   let endIndex = data.index(footerIndex, offsetBy: wifiFooter.count, limitedBy: data.endIndex) else {
@@ -92,7 +94,6 @@ final class BRProtocolParser {
                 continue
             }
             let payload = data.subdata(in: payloadIndex..<footerIndex)
-            let command = parseCommand(firstByte: data[commandIndex], secondByte: data[data.index(after: commandIndex)])
             let sequence = readLE16(from: data, at: sequenceIndex)
             let receivedCRC = readLE16(from: data, at: crcIndex)
             let expectedCRC = payload.isEmpty ? 0 : try BRCRC16.compute(payload)
@@ -118,11 +119,18 @@ final class BRProtocolParser {
 
     private func wifiFrameKind(for command: BRCommandCode) -> BRFrameKind {
         switch command {
-        case .syncFileData, .recordStart, .flashIdeaData:
+        case .syncFileData:
             return .audio
         default:
             return .command
         }
+    }
+
+    private func maxWifiPayloadLength(for command: BRCommandCode) -> Int {
+        if command == .syncFileData {
+            return BRWifiSocketConstants.maxAudioPayloadLength
+        }
+        return BRWifiSocketConstants.maxPayloadLength
     }
 
     private func appendLE16(_ value: UInt16, to data: inout Data) {

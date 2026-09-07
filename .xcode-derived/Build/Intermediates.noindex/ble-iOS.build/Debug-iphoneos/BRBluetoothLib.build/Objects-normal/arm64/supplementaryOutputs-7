@@ -1,0 +1,37 @@
+{
+  "/Users/admin/ble-iOS/Sources/BRBluetoothLib/Protocol/BRProtocolModels.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRProtocolModels.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRProtocolModels.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRProtocolModels.dia",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRProtocolModels.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRProtocolModels.swiftdeps"
+  },
+  "/Users/admin/ble-iOS/Sources/BRBluetoothLib/Protocol/BRProtocolParser.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRProtocolParser.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRProtocolParser.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRProtocolParser.dia",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRProtocolParser.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRProtocolParser.swiftdeps"
+  },
+  "/Users/admin/ble-iOS/Sources/BRBluetoothLib/Synchro/FileSyncObserver.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/FileSyncObserver.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/FileSyncObserver.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/FileSyncObserver.dia",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/FileSyncObserver.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/FileSyncObserver.swiftdeps"
+  },
+  "/Users/admin/ble-iOS/Sources/BRBluetoothLib/Synchro/RealTimeSync.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/RealTimeSync.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/RealTimeSync.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/RealTimeSync.dia",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/RealTimeSync.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/RealTimeSync.swiftdeps"
+  },
+  "/Users/admin/ble-iOS/Sources/BRBluetoothLib/Synchro/SingleFileSynchro.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/SingleFileSynchro.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/SingleFileSynchro.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/SingleFileSynchro.dia",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/SingleFileSynchro.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/SingleFileSynchro.swiftdeps"
+  }
+}

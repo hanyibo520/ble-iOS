@@ -11,7 +11,7 @@ protocol BRWifiHotspotConnecting: AnyObject {
 final class BRNEHotspotConnector: BRWifiHotspotConnecting {
     func connect(_ hotspot: BRWifiHotspotInfo) async throws {
         #if os(iOS) && canImport(NetworkExtension)
-        try await withCheckedThrowingContinuation { continuation in
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             let configuration = NEHotspotConfiguration(ssid: hotspot.ssid, passphrase: hotspot.password, isWEP: false)
             configuration.joinOnce = true
             NEHotspotConfigurationManager.shared.apply(configuration) { error in
@@ -87,9 +87,21 @@ public final class PhoneWifiManager {
     public func openSocket(host: String = BRWifiSocketConstants.host, port: UInt16 = BRWifiSocketConstants.port) async throws {
         wifiTransport.configure(host: host, port: port)
         context.emit(.wifiStateChanged(.socketConnecting))
-        try await wifiTransport.open()
-        context.emit(.wifiStateChanged(.socketConnected))
-        startHeartbeat()
+        let socketStatusWait = try wifiExecutor.prepareWaitForResponse(.socketStatus, timeout: context.configuration.wifiCommandTimeout)
+        do {
+            try await wifiTransport.open()
+            let packet = try await socketStatusWait.value()
+            let status = Self.parseSocketStatus(packet.payload)
+            guard status.isConnected else {
+                throw BRSDKError.deviceError(code: status.rawStatus, message: "WiFi socket 未连接")
+            }
+            context.emit(.wifiStateChanged(.socketConnected))
+            startHeartbeat()
+        } catch {
+            socketStatusWait.cancel()
+            await wifiTransport.close()
+            throw error
+        }
     }
 
     public func querySocketStatus() async throws -> BRSocketStatus {

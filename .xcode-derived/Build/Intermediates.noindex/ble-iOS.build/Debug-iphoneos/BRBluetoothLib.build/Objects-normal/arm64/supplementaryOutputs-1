@@ -1,0 +1,44 @@
+{
+  "/Users/admin/ble-iOS/Sources/BRBluetoothLib/Audio/BleAudioManager.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BleAudioManager.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BleAudioManager.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BleAudioManager.dia",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BleAudioManager.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BleAudioManager.swiftdeps"
+  },
+  "/Users/admin/ble-iOS/Sources/BRBluetoothLib/Audio/BleAudioSyncManager.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BleAudioSyncManager.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BleAudioSyncManager.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BleAudioSyncManager.dia",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BleAudioSyncManager.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BleAudioSyncManager.swiftdeps"
+  },
+  "/Users/admin/ble-iOS/Sources/BRBluetoothLib/Audio/EarphoneModeManager.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/EarphoneModeManager.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/EarphoneModeManager.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/EarphoneModeManager.dia",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/EarphoneModeManager.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/EarphoneModeManager.swiftdeps"
+  },
+  "/Users/admin/ble-iOS/Sources/BRBluetoothLib/Audio/FileMarkManager.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/FileMarkManager.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/FileMarkManager.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/FileMarkManager.dia",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/FileMarkManager.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/FileMarkManager.swiftdeps"
+  },
+  "/Users/admin/ble-iOS/Sources/BRBluetoothLib/Audio/FlashIdeaManager.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/FlashIdeaManager.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/FlashIdeaManager.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/FlashIdeaManager.dia",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/FlashIdeaManager.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/FlashIdeaManager.swiftdeps"
+  },
+  "/Users/admin/ble-iOS/Sources/BRBluetoothLib/BRBluetoothLib.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRBluetoothLib.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRBluetoothLib.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRBluetoothLib.dia",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRBluetoothLib.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRBluetoothLib.swiftdeps"
+  }
+}

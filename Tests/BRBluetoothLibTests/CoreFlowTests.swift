@@ -91,6 +91,51 @@ final class CoreFlowTests: XCTestCase {
         XCTAssertEqual(status.rawStatus, 1)
     }
 
+    func testHandshakeRejectsUnexpectedBoundDeviceUUID() async throws {
+        let parser = BRProtocolParser()
+        let transport = TestCommandTransport(kind: .ble)
+        let matcher = ResponseMatcher(channel: .ble)
+        let router = InboundPacketRouter()
+        let executor = CommandExecutor(kind: .ble, transport: transport, parser: parser, matcher: matcher, router: router)
+        let coordinator = BRBLEHandshakeCoordinator(executor: executor)
+        let task = Task {
+            try await coordinator.perform(appInfo: BRHandshakeAppInfo(uuid: "app-uuid"), expectedDeviceUUID: "expected-device-uuid", timeout: 1)
+        }
+        let greeting = try BRPayloadCodec.encodeJSONObject(["uuid": "other-device-uuid"])
+        var payload = Data([0x00])
+        payload.append(greeting)
+
+        try await Task.sleep(nanoseconds: 1_000_000)
+        _ = executor.receive(BRPacket(frameKind: .command, command: .handshake, payload: payload))
+
+        do {
+            _ = try await task.value
+            XCTFail("Expected handshake UUID mismatch to fail.")
+        } catch BRSDKError.deviceError(let code, let message) {
+            XCTAssertEqual(code, 0x01)
+            XCTAssertEqual(message, "设备 UUID 与本地绑定记录不一致")
+        }
+    }
+
+    func testOpenSocketWaitsForSocketStatusPush() async throws {
+        let parser = BRProtocolParser()
+        let context = BRSDKContext(configuration: BRSDKConfiguration(wifiCommandTimeout: 1))
+        let wifiTransport = WifiTransport(context: context, parser: parser)
+        let wifiMatcher = ResponseMatcher(channel: .wifi)
+        let wifiRouter = InboundPacketRouter()
+        let wifiExecutor = CommandExecutor(kind: .wifi, transport: wifiTransport, parser: parser, matcher: wifiMatcher, router: wifiRouter)
+        let bleTransport = TestCommandTransport(kind: .ble)
+        let bleExecutor = CommandExecutor(kind: .ble, transport: bleTransport, parser: parser, matcher: ResponseMatcher(channel: .ble), router: InboundPacketRouter())
+        let manager = PhoneWifiManager(executor: bleExecutor, wifiExecutor: wifiExecutor, context: context, wifiTransport: wifiTransport) { nil }
+        wifiTransport.setReceiveHandler { packet in _ = wifiExecutor.receive(packet) }
+        wifiTransport.setOpenHandlerForTesting {
+            try wifiTransport.handleSocketData(try parser.encodeWifiPacket(.socketStatus))
+        }
+
+        try await manager.openSocket()
+        await manager.closeSocket()
+    }
+
     func testBleSyncCatchesImmediateFinishCRCResponse() async throws {
         let parser = BRProtocolParser()
         let transport = TestCommandTransport(kind: .ble)
@@ -148,6 +193,33 @@ final class CoreFlowTests: XCTestCase {
         XCTAssertEqual(files.first?.file, "R20260101-000001.opus")
     }
 
+    func testWifiCloseSyncQueueClosesWifiAfterLeavingSyncMode() async throws {
+        let parser = BRProtocolParser()
+        let transport = TestCommandTransport(kind: .wifi)
+        let matcher = ResponseMatcher(channel: .wifi)
+        let router = InboundPacketRouter()
+        let context = BRSDKContext(configuration: BRSDKConfiguration(wifiCommandTimeout: 1, syncRootDirectory: temporaryDirectory()))
+        let syncDirManager = SyncDirManager(context: context)
+        let singleFileSynchro = SingleFileSynchro(context: context, syncDirManager: syncDirManager)
+        var didCloseWifi = false
+        var executor: CommandExecutor!
+        executor = CommandExecutor(kind: .wifi, transport: transport, parser: parser, matcher: matcher, router: router)
+        let manager = WifiAudioSyncManager(executor: executor, context: context, singleFileSynchro: singleFileSynchro, syncDirManager: syncDirManager) {
+            didCloseWifi = true
+        }
+
+        transport.onWrite = { data in
+            let request = try XCTUnwrap(parser.decodeWifiPackets(data).first)
+            XCTAssertEqual(request.command, .syncStateNotify)
+            XCTAssertEqual(request.payload, Data([0]))
+            _ = executor.receive(BRPacket(frameKind: .command, command: request.command, sequence: request.sequence, payload: request.payload))
+        }
+
+        let closeResult = try await manager.closeSyncQueue()
+        XCTAssertTrue(closeResult)
+        XCTAssertTrue(didCloseWifi)
+    }
+
     func testWifiOtaRejectsIncompleteFinalPackageEndStatus() async throws {
         let parser = BRProtocolParser()
         let transport = TestCommandTransport(kind: .wifi)
@@ -158,9 +230,11 @@ final class CoreFlowTests: XCTestCase {
         executor = CommandExecutor(kind: .wifi, transport: transport, parser: parser, matcher: matcher, router: router)
         let manager = WifiOtaManager(executor: executor, context: context)
         let directory = temporaryDirectory()
-        let packageURL = directory.appendingPathComponent("update_xxx_ble_v12.4_0FC1-454BEF39_20241119.ufw")
+        let blePackageURL = directory.appendingPathComponent("update_xxx_ble_v12.4_0FC1-454BEF39_20241119.ufw")
+        let wifiPackageURL = directory.appendingPathComponent("update_xxx_wifi_v1.6_5CEA-52E35B42_20241119.ufw")
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        try Data([0xAA]).write(to: packageURL)
+        try Data([0xAA]).write(to: blePackageURL)
+        try Data([0xBB]).write(to: wifiPackageURL)
         defer { try? FileManager.default.removeItem(at: directory) }
 
         transport.onWrite = { data in
@@ -180,7 +254,11 @@ final class CoreFlowTests: XCTestCase {
         }
 
         do {
-            _ = try await manager.startOta(packageInfo: BROtaPackageInfo(fileURL: packageURL, chipType: .ble))
+            let packageSet = BROtaPackageSetInfo(
+                blePackage: BROtaPackageInfo(fileURL: blePackageURL, chipType: .ble),
+                wifiPackage: BROtaPackageInfo(fileURL: wifiPackageURL, chipType: .wifi)
+            )
+            _ = try await manager.startOta(packageSet: packageSet)
             XCTFail("Expected final package end status 0x01 to fail.")
         } catch BRSDKError.deviceError(let code, let message) {
             XCTAssertEqual(code, 1)

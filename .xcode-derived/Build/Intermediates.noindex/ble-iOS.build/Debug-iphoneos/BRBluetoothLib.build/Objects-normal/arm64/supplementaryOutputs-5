@@ -1,0 +1,44 @@
+{
+  "/Users/admin/ble-iOS/Sources/BRBluetoothLib/Core/InboundPacketRouter.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/InboundPacketRouter.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/InboundPacketRouter.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/InboundPacketRouter.dia",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/InboundPacketRouter.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/InboundPacketRouter.swiftdeps"
+  },
+  "/Users/admin/ble-iOS/Sources/BRBluetoothLib/Core/ResponseMatcher.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/ResponseMatcher.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/ResponseMatcher.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/ResponseMatcher.dia",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/ResponseMatcher.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/ResponseMatcher.swiftdeps"
+  },
+  "/Users/admin/ble-iOS/Sources/BRBluetoothLib/Device/DeviceNormalManager.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/DeviceNormalManager.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/DeviceNormalManager.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/DeviceNormalManager.dia",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/DeviceNormalManager.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/DeviceNormalManager.swiftdeps"
+  },
+  "/Users/admin/ble-iOS/Sources/BRBluetoothLib/Ota/WifiOtaDebugManager.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/WifiOtaDebugManager.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/WifiOtaDebugManager.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/WifiOtaDebugManager.dia",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/WifiOtaDebugManager.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/WifiOtaDebugManager.swiftdeps"
+  },
+  "/Users/admin/ble-iOS/Sources/BRBluetoothLib/Ota/WifiOtaManager.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/WifiOtaManager.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/WifiOtaManager.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/WifiOtaManager.dia",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/WifiOtaManager.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/WifiOtaManager.swiftdeps"
+  },
+  "/Users/admin/ble-iOS/Sources/BRBluetoothLib/Protocol/BRCRC16.swift" : {
+    "const-values" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRCRC16.swiftconstvalues",
+    "dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRCRC16.d",
+    "diagnostics" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRCRC16.dia",
+    "object" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRCRC16.o",
+    "swift-dependencies" : "/Users/admin/ble-iOS/.xcode-derived/Build/Intermediates.noindex/ble-iOS.build/Debug-iphoneos/BRBluetoothLib.build/Objects-normal/arm64/BRCRC16.swiftdeps"
+  }
+}

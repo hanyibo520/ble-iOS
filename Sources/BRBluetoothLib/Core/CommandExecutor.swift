@@ -43,6 +43,10 @@ final class CommandExecutor: @unchecked Sendable {
         try await matcher.wait(for: BRCommandRequestKey(channel: kind, command: command, sequence: kind == .wifi ? sequence : nil), timeout: timeout)
     }
 
+    func prepareWaitForResponse(_ command: BRCommandCode, sequence: UInt16? = nil, timeout: TimeInterval) throws -> BRRegisteredResponseWait {
+        try matcher.register(for: BRCommandRequestKey(channel: kind, command: command, sequence: kind == .wifi ? sequence : nil), timeout: timeout)
+    }
+
     @discardableResult
     func receive(_ packet: BRPacket) -> Bool {
         if matcher.fulfill(packet) { return true }

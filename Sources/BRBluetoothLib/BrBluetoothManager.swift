@@ -88,7 +88,9 @@ public final class BrBluetoothManager {
         self.deviceNormalManager = DeviceNormalManager(executor: bleExecutor, context: context, boundDeviceStore: boundStore)
         self.bleAudioManager = BleAudioManager(executor: bleExecutor, context: context, realTimeSync: realTimeSync)
         self.bleAudioSyncManager = BleAudioSyncManager(executor: bleExecutor, context: context, singleFileSynchro: singleFileSynchro, syncDirManager: syncDirManager)
-        self.wifiSyncManager = WifiAudioSyncManager(executor: wifiExecutor, context: context, singleFileSynchro: singleFileSynchro, syncDirManager: syncDirManager)
+        self.wifiSyncManager = WifiAudioSyncManager(executor: wifiExecutor, context: context, singleFileSynchro: singleFileSynchro, syncDirManager: syncDirManager, closeWifi: { [weak phoneWifiManager] in
+            _ = try await phoneWifiManager?.closeWifi()
+        })
         self.wifiOtaManager = WifiOtaManager(executor: wifiExecutor, context: context)
         self.wifiOtaDebugManager = WifiOtaDebugManager(context: context)
         self.flashIdeaManager = FlashIdeaManager(context: context, realTimeSync: realTimeSync)

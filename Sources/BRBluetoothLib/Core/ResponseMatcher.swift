@@ -110,6 +110,10 @@ struct BRRegisteredResponseWait {
     func value() async throws -> BRPacket {
         try await waiter.value(onCancel: cancelHandler)
     }
+
+    func cancel() {
+        cancelHandler()
+    }
 }
 
 private final class PendingResponseWaiter: @unchecked Sendable {

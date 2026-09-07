@@ -13,6 +13,7 @@ public final class WifiOtaManager {
         self.context = context
     }
 
+    @available(*, deprecated, message: "协议 WiFi OTA 主流程需要同时提供 BLE/WiFi 两个 ufw 包；请优先使用 startOta(packageSet:).")
     public func startOta(packageInfo: BROtaPackageInfo, progressHandler: ((BROtaProgress) -> Void)? = nil) async throws -> BROtaResult {
         try WifiOtaDebugManager.validatePackageInfo(packageInfo)
         return try await startOta(packageSet: nil, singlePackage: packageInfo, progressHandler: progressHandler)

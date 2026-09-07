@@ -5,15 +5,17 @@ public final class WifiAudioSyncManager {
     private let context: BRSDKContext
     private let singleFileSynchro: SingleFileSynchro
     private let syncDirManager: SyncDirManager
+    private let closeWifi: (() async throws -> Void)?
     private var fileListContinuation: CheckedContinuation<[BRAudioFileInfo], Error>?
     private var finishContinuation: CheckedContinuation<UInt16, Error>?
     private let lock = NSLock()
 
-    init(executor: CommandExecutor, context: BRSDKContext, singleFileSynchro: SingleFileSynchro, syncDirManager: SyncDirManager) {
+    init(executor: CommandExecutor, context: BRSDKContext, singleFileSynchro: SingleFileSynchro, syncDirManager: SyncDirManager, closeWifi: (() async throws -> Void)? = nil) {
         self.executor = executor
         self.context = context
         self.singleFileSynchro = singleFileSynchro
         self.syncDirManager = syncDirManager
+        self.closeWifi = closeWifi
     }
 
     public func enableSyncMode(_ enable: Bool) async throws -> Bool {
@@ -23,8 +25,14 @@ public final class WifiAudioSyncManager {
 
     public func fetchFileList(timeout: TimeInterval? = nil) async throws -> [BRAudioFileInfo] {
         _ = try await enableSyncMode(true)
-        defer { Task { _ = try? await enableSyncMode(false) } }
-        return try await onlyFetchFileList(timeout: timeout)
+        do {
+            let files = try await onlyFetchFileList(timeout: timeout)
+            _ = try await closeSyncQueue()
+            return files
+        } catch {
+            _ = try? await closeSyncQueue()
+            throw error
+        }
     }
 
     public func onlyFetchFileList(timeout: TimeInterval? = nil) async throws -> [BRAudioFileInfo] {
@@ -66,17 +74,26 @@ public final class WifiAudioSyncManager {
 
     public func startSyncQueue(_ wantFiles: [BRAudioFileInfo], observer: FileSyncObserver? = nil) async throws -> [BRSingleFinishResult] {
         _ = try await enableSyncMode(true)
-        defer { Task { _ = try? await enableSyncMode(false) } }
         var results: [BRSingleFinishResult] = []
-        for file in wantFiles where syncDirManager.shouldSync(file) {
-            results.append(try await startSyncOne(file, observer: observer))
+        do {
+            for file in wantFiles where syncDirManager.shouldSync(file) {
+                results.append(try await startSyncOne(file, observer: observer))
+            }
+            _ = try await closeSyncQueue()
+            return results
+        } catch {
+            _ = try? await closeSyncQueue()
+            throw error
         }
-        return results
     }
 
     public func closeSyncQueue() async throws -> Bool {
         singleFileSynchro.cancelCurrent(reason: "close WiFi sync")
-        return try await enableSyncMode(false)
+        let disabled = try await enableSyncMode(false)
+        if let closeWifi {
+            try await closeWifi()
+        }
+        return disabled
     }
 
     func handleFileListPacket(_ packet: BRPacket) {

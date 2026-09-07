@@ -1,0 +1,4 @@
+module BRBluetoothLib {
+header "BRBluetoothLib-Swift.h"
+export *
+}

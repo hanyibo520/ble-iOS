@@ -16,5 +16,6 @@ public enum BRWifiSocketConstants {
     public static let frameHeader = "MeChoWifiStart"
     public static let frameFooter = "MeChoWifiEnd"
     public static let maxPayloadLength = 40 * 1024
+    public static let maxAudioPayloadLength = 1024
     public static let heartbeatInterval: TimeInterval = 3
 }

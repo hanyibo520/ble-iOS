@@ -1,0 +1,27 @@
+{
+  "object" : {
+    "artifacts" : [
+
+    ],
+    "dependencies" : [
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "ble-ios",
+          "kind" : "fileSystem",
+          "location" : "/Users/admin/ble-iOS",
+          "name" : "ble-iOS"
+        },
+        "state" : {
+          "name" : "fileSystem",
+          "path" : "/Users/admin/ble-iOS"
+        },
+        "subpath" : "ble-ios"
+      }
+    ],
+    "prebuilts" : [
+
+    ]
+  },
+  "version" : 7
+}

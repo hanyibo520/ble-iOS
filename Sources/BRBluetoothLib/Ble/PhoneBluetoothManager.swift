@@ -26,12 +26,31 @@ public final class PhoneBluetoothManager: @unchecked Sendable {
         lock.br_withLock { connectedDeviceStorage }
     }
 
+    public func bindTransport(dataWriter: BRBLEDataWriting, notifyController: BRBLENotifyControlling) {
+        transport.bind(dataWriter: dataWriter, notifyController: notifyController)
+    }
+
+    public func unbindTransport() {
+        transport.unbind()
+    }
+
     public func connect(_ device: BRDiscoveredDevice, appUUID: String? = nil, timeout: TimeInterval = 30) async throws -> BRBlueConnectInfo {
         setState(.connecting)
         let resolvedAppUUID = appUUID?.trimmingCharacters(in: .whitespacesAndNewlines).br_nilIfEmpty ?? lastAppUUID ?? UUID().uuidString
         lastAppUUID = resolvedAppUUID
-        try await transport.open()
-        let detail = try await handshakeCoordinator.perform(appInfo: BRHandshakeAppInfo(uuid: resolvedAppUUID), timeout: min(timeout, context.configuration.bleCommandTimeout))
+        let expectedDeviceUUID = boundDeviceStore.loadAll()
+            .first { !$0.peripheralIdentifier.isEmpty && $0.peripheralIdentifier == device.identifier }?
+            .deviceUUID
+            .br_nilIfEmpty
+        let detail: BRDeviceDetailInfo
+        do {
+            try await transport.open()
+            detail = try await handshakeCoordinator.perform(appInfo: BRHandshakeAppInfo(uuid: resolvedAppUUID), expectedDeviceUUID: expectedDeviceUUID, timeout: min(timeout, context.configuration.bleCommandTimeout))
+        } catch {
+            await transport.close()
+            setState(.failed)
+            throw error
+        }
         let connected = BRConnectedDevice(identifier: device.identifier, name: detail.name.isEmpty ? device.name : detail.name, detailInfo: detail)
         lock.br_withLock {
             connectedDeviceStorage = connected
@@ -65,6 +84,18 @@ public final class PhoneBluetoothManager: @unchecked Sendable {
 
     public func getLastBoundDevice() -> BRBoundDeviceInfo? {
         boundDeviceStore.loadLast()
+    }
+
+    public func getBoundDevices() -> [BRBoundDeviceInfo] {
+        boundDeviceStore.loadAll()
+    }
+
+    public func receiveMainNotifyData(_ data: Data) throws {
+        try transport.handleNotifyData(data)
+    }
+
+    public func receiveFlashIdeaNotifyData(_ data: Data) throws {
+        try transport.handleNotifyData(data)
     }
 
     func handleMainNotifyData(_ data: Data) throws {

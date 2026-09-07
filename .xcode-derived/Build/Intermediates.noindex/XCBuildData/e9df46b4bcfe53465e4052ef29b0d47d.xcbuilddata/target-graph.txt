@@ -1,0 +1,6 @@
+Target dependency graph (3 targets)
+Target 'BRBluetoothLibDemo' in project 'BRBluetoothLibDemo'
+➜ Explicit dependency on target 'BRBluetoothLib' in project 'ble-iOS'
+Target 'BRBluetoothLib' in project 'ble-iOS'
+➜ Explicit dependency on target 'BRBluetoothLib' in project 'ble-iOS'
+Target 'BRBluetoothLib' in project 'ble-iOS' (no dependencies)
