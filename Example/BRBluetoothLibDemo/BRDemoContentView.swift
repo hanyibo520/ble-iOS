@@ -11,6 +11,7 @@ struct BRDemoContentView: View {
         NavigationView {
             List {
                 connectionSection
+                scanResultsSection
                 deviceSection
                 recordingSection
                 bleSyncSection
@@ -38,21 +39,43 @@ struct BRDemoContentView: View {
                 Button("回连") { viewModel.reconnectLastBoundDevice() }
                 Button("断开") { viewModel.disconnect() }
             }
+            .buttonStyle(.borderless)
             Text("蓝牙：\(viewModel.bluetoothStateText)")
             Text("连接：\(viewModel.connectionText)")
-            ForEach(viewModel.peripherals) { device in
-                Button {
-                    viewModel.selectedPeripheralID = device.id
-                    viewModel.connectSelected()
-                } label: {
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text(device.name)
-                            Text(device.id.uuidString).font(.caption).foregroundColor(.secondary)
+        }
+    }
+
+    private var scanResultsSection: some View {
+        Section(header: Text("扫描结果")) {
+            if viewModel.peripherals.isEmpty {
+                Text("暂无扫描结果")
+                    .foregroundColor(.secondary)
+            } else {
+                Text("共 \(viewModel.peripherals.count) 台卡片")
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+                ForEach(viewModel.peripherals) { device in
+                    Button {
+                        viewModel.selectedPeripheralID = device.id
+                        viewModel.connectSelected()
+                    } label: {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(device.displayTitle)
+                                Text(device.detailLine)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                            Spacer()
+                            VStack(alignment: .trailing, spacing: 4) {
+                                Text("RSSI \(device.rssi)")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                Text("连接")
+                            }
                         }
-                        Spacer()
-                        Text("\(device.rssi)")
                     }
+                    .buttonStyle(.borderless)
                 }
             }
         }
@@ -69,10 +92,12 @@ struct BRDemoContentView: View {
                 Button("禁用存储") { viewModel.disableStorage(true) }
                 Button("恢复存储") { viewModel.disableStorage(false) }
             }
+            .buttonStyle(.borderless)
             HStack {
                 Button("禁用 WAV") { viewModel.disableWav(true) }
                 Button("恢复 WAV") { viewModel.disableWav(false) }
             }
+            .buttonStyle(.borderless)
             TextField("文件名，例如 R20240607-121212.opus", text: $viewModel.selectedFileName)
                 .autocapitalization(.none)
             Button("删除文件 0x1E") { viewModel.deleteSelectedFile() }
@@ -83,6 +108,7 @@ struct BRDemoContentView: View {
                 Button("解绑并删除音频") { viewModel.unbindDevice(deleteAudio: true) }
                     .foregroundColor(.red)
             }
+            .buttonStyle(.borderless)
             if !viewModel.deviceText.isEmpty {
                 Text(viewModel.deviceText).font(.footnote)
             }
@@ -97,6 +123,7 @@ struct BRDemoContentView: View {
                 Button("恢复") { viewModel.resumeRecording() }
                 Button("停止") { viewModel.stopRecording() }
             }
+            .buttonStyle(.borderless)
             Text(viewModel.progressText).font(.footnote).foregroundColor(.secondary)
         }
     }
@@ -109,6 +136,7 @@ struct BRDemoContentView: View {
                 Button("同步选中文件") { viewModel.syncSelectedFileByBle() }
                 Button("同步全部") { viewModel.syncAllFilesByBle() }
             }
+            .buttonStyle(.borderless)
         }
     }
 
@@ -126,6 +154,7 @@ struct BRDemoContentView: View {
                 Button("断点续传") { viewModel.resumeSelectedFileByWifi() }
                 Button("WiFi 同步全部") { viewModel.syncAllFilesByWifi() }
             }
+            .buttonStyle(.borderless)
         }
     }
 
@@ -138,6 +167,7 @@ struct BRDemoContentView: View {
                 Button("取消 OTA") { viewModel.cancelOta() }
                     .foregroundColor(.red)
             }
+            .buttonStyle(.borderless)
         }
     }
 
@@ -160,15 +190,18 @@ struct BRDemoContentView: View {
                 Button("开启耳机模式") { viewModel.enableEarphoneMode() }
                 Button("关闭耳机模式") { viewModel.disableEarphoneMode() }
             }
+            .buttonStyle(.borderless)
             HStack {
                 Button("连接耳机") { viewModel.connectEarphone() }
                 Button("查状态") { viewModel.queryEarphoneStatus() }
             }
+            .buttonStyle(.borderless)
             HStack {
                 Button("查历史 MAC") { viewModel.queryEarphoneHistory() }
                 Button("清空历史") { viewModel.clearEarphoneHistory() }
                 Button("经典蓝牙名") { viewModel.queryClassicBluetoothName() }
             }
+            .buttonStyle(.borderless)
         }
     }
 

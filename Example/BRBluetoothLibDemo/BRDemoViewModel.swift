@@ -25,12 +25,14 @@ final class BRDemoViewModel: ObservableObject {
     let bridge = BRDemoBluetoothBridge()
     private let sdk = BrBluetoothManager.shared
     private let syncObserver = BRDemoSyncObserver()
+    private var peripheralSNCache: [UUID: String] = [:]
 
     init() {
         bridge.delegate = self
         sdk.setDelegate(self)
         sdk.setLogger(self)
         sdk.configure(BRSDKConfiguration(syncRootDirectory: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first))
+        seedPeripheralSNCache()
         syncObserver.onProgress = { [weak self] progress in
             Task { @MainActor in
                 self?.progressText = "\(progress.file) \(progress.receivedBytes)/\(progress.totalBytes) bytes, frame \(progress.lastFrameIndex)"
@@ -70,7 +72,8 @@ final class BRDemoViewModel: ObservableObject {
 
     func reconnectLastBoundDevice() {
         run("回连上次绑定设备") { [self] in
-            let info = try await sdk.phoneBluetoothManager.connectLastBoundDevice()
+            let device = try await bridge.connectLastBoundDevice()
+            let info = try await sdk.phoneBluetoothManager.connect(device)
             connectionText = "已回连：\(info.device.name ?? "-")"
             if let detail = info.handshakeInfo {
                 deviceText = Self.formatDeviceDetail(detail)
@@ -447,8 +450,9 @@ extension BRDemoViewModel: BRDemoBluetoothBridgeDelegate {
     }
 
     func bridgeDidDiscover(_ device: BRDemoPeripheral) {
+        let merged = device.with(sn: peripheralSNCache[device.id])
         peripherals.removeAll { $0.id == device.id }
-        peripherals.append(device)
+        peripherals.append(merged)
     }
 
     func bridgeDidConnect(_ peripheral: CBPeripheral) {
@@ -477,6 +481,7 @@ extension BRDemoViewModel: BRSDKDelegate {
                 appendLog("SDK 发现设备：\(device.name ?? device.identifier)")
             case let .deviceConnected(device):
                 connectionText = "SDK 已连接：\(device.name ?? device.identifier)"
+                cacheSN(device.detailInfo?.sn, for: device.identifier)
             case let .deviceDisconnected(info):
                 connectionText = "SDK 已断开：\(info.reason ?? "-")"
             case let .boundDeviceSaved(info):
@@ -520,6 +525,25 @@ extension BRDemoViewModel: BRSDKDelegate {
             case let .earphoneConnectionChanged(result):
                 appendLog("耳机连接状态：classic=\(result.classicBluetoothEnabled), earphone=\(result.earphoneStatus), phone=\(result.phoneStatus)")
             }
+        }
+    }
+
+    private func seedPeripheralSNCache() {
+        for boundDevice in sdk.phoneBluetoothManager.getBoundDevices() {
+            guard let id = UUID(uuidString: boundDevice.peripheralIdentifier),
+                  !boundDevice.deviceSN.isEmpty else {
+                continue
+            }
+            peripheralSNCache[id] = boundDevice.deviceSN
+        }
+    }
+
+    private func cacheSN(_ sn: String?, for identifier: String) {
+        let trimmed = sn?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        guard !trimmed.isEmpty, let id = UUID(uuidString: identifier) else { return }
+        peripheralSNCache[id] = trimmed
+        if let index = peripherals.firstIndex(where: { $0.id == id }) {
+            peripherals[index] = peripherals[index].with(sn: trimmed)
         }
     }
 }

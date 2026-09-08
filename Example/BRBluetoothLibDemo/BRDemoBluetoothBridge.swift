@@ -14,15 +14,42 @@ protocol BRDemoBluetoothBridgeDelegate: AnyObject {
 struct BRDemoPeripheral: Identifiable, Equatable {
     let id: UUID
     let name: String
+    let sn: String?
     let rssi: Int
+    let serviceUUIDs: [UUID]
     fileprivate let peripheral: CBPeripheral
+
+    var displayTitle: String {
+        let trimmedSN = sn?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if !trimmedSN.isEmpty {
+            return trimmedSN
+        }
+        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmedName.isEmpty || trimmedName == "Unknown" {
+            return "未获取SN"
+        }
+        return trimmedName
+    }
+
+    var detailLine: String {
+        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmedName.isEmpty || trimmedName == "Unknown" {
+            return "名称：未获取"
+        }
+        return "名称：\(trimmedName)"
+    }
+
+    func with(sn: String?) -> BRDemoPeripheral {
+        BRDemoPeripheral(id: id, name: name, sn: sn, rssi: rssi, serviceUUIDs: serviceUUIDs, peripheral: peripheral)
+    }
 
     var sdkDevice: BRDiscoveredDevice {
         BRDiscoveredDevice(
             identifier: id.uuidString,
             name: name,
+            sn: sn,
             rssi: rssi,
-            serviceUUIDs: [BRGattUUIDs.advertisementService, BRGattUUIDs.mainService]
+            serviceUUIDs: serviceUUIDs
         )
     }
 }
@@ -39,32 +66,111 @@ final class BRDemoBluetoothBridge: NSObject, ObservableObject {
     private var mainNotifyCharacteristic: CBCharacteristic?
     private var flashIdeaWriteCharacteristic: CBCharacteristic?
     private var flashIdeaNotifyCharacteristic: CBCharacteristic?
+    private var pendingScan = false
 
     func startScan() {
         _ = central
-        guard central.state == .poweredOn else {
-            notifyMain { $0.bridgeDidFail("蓝牙未开启，当前状态：\(self.central.state.rawValue)") }
-            return
+        switch central.state {
+        case .poweredOn:
+            beginScan()
+        case .unknown, .resetting:
+            pendingScan = true
+            notifyMain { $0.bridgeDidFail("蓝牙初始化中，稍后会自动开始扫描") }
+        default:
+            notifyMain { $0.bridgeDidFail("蓝牙不可用，当前状态：\(self.central.state.brDemoDescription)") }
         }
+    }
+
+    func connectLastBoundDevice() async throws -> BRDiscoveredDevice {
+        _ = central
+        guard central.state == .poweredOn else {
+            throw BRSDKError.invalidState(message: "蓝牙不可用，当前状态：\(central.state.brDemoDescription)")
+        }
+        guard let boundDevice = manager.phoneBluetoothManager.getLastBoundDevice() else {
+            throw BRSDKError.invalidState(message: "没有已绑定设备")
+        }
+        guard let identifier = UUID(uuidString: boundDevice.peripheralIdentifier) else {
+            throw BRSDKError.invalidState(message: "已绑定设备缺少可回连的外设标识")
+        }
+        guard let peripheral = central.retrievePeripherals(withIdentifiers: [identifier]).first else {
+            throw BRSDKError.invalidState(message: "系统没有找到已绑定外设，请先扫描并手动连接一次")
+        }
+        let device = BRDiscoveredDevice(
+            identifier: boundDevice.peripheralIdentifier,
+            name: boundDevice.deviceName,
+            sn: boundDevice.deviceSN,
+            serviceUUIDs: [BRGattUUIDs.mainService]
+        )
+        try await connectPeripheral(peripheral)
+        return device
+    }
+
+    private func beginScan() {
+        pendingScan = false
         central.scanForPeripherals(
-            withServices: [CBUUID(nsuuid: BRGattUUIDs.advertisementService)],
-            options: [CBCentralManagerScanOptionAllowDuplicatesKey: false]
+            withServices: [
+                CBUUID(nsuuid: BRGattUUIDs.advertisementService),
+                CBUUID(nsuuid: BRGattUUIDs.mainService)
+            ],
+            options: [CBCentralManagerScanOptionAllowDuplicatesKey: true]
         )
     }
 
+    private func resetPeripheralState() {
+        mainWriteCharacteristic = nil
+        mainNotifyCharacteristic = nil
+        flashIdeaWriteCharacteristic = nil
+        flashIdeaNotifyCharacteristic = nil
+    }
+
+    private func connectPeripheral(_ peripheral: CBPeripheral) async throws {
+        if connectContinuation != nil {
+            throw BRSDKError.invalidState(message: "已有 BLE 连接正在进行")
+        }
+        guard central.state == .poweredOn else {
+            throw BRSDKError.invalidState(message: "蓝牙不可用，当前状态：\(central.state.brDemoDescription)")
+        }
+        stopScan()
+        activePeripheral = peripheral
+        resetPeripheralState()
+        peripheral.delegate = self
+        try await withCheckedThrowingContinuation { continuation in
+            connectContinuation = continuation
+            central.connect(peripheral)
+        }
+        manager.phoneBluetoothManager.bindTransport(dataWriter: self, notifyController: self)
+    }
+
+    private func advertisedServiceUUIDs(from advertisementData: [String: Any]) -> [UUID] {
+        guard let serviceUUIDs = advertisementData[CBAdvertisementDataServiceUUIDsKey] as? [CBUUID] else {
+            return []
+        }
+        return serviceUUIDs.compactMap(\.brDemoFoundationUUID)
+    }
+
+    private func notifyStateUnavailable(_ state: CBManagerState) {
+        guard state != .poweredOn else { return }
+        let message: String
+        switch state {
+        case .poweredOff:
+            message = "蓝牙已关闭，请在系统里打开蓝牙"
+        case .unauthorized:
+            message = "没有蓝牙权限，请在设置里允许 demo 使用蓝牙"
+        case .unsupported:
+            message = "当前设备不支持 BLE"
+        default:
+            message = "蓝牙不可用，当前状态：\(state.brDemoDescription)"
+        }
+        notifyMain { $0.bridgeDidFail(message) }
+    }
+
     func stopScan() {
+        pendingScan = false
         central.stopScan()
     }
 
     func connect(_ device: BRDemoPeripheral) async throws {
-        stopScan()
-        activePeripheral = device.peripheral
-        device.peripheral.delegate = self
-        try await withCheckedThrowingContinuation { continuation in
-            connectContinuation = continuation
-            central.connect(device.peripheral)
-        }
-        manager.phoneBluetoothManager.bindTransport(dataWriter: self, notifyController: self)
+        try await connectPeripheral(device.peripheral)
     }
 
     func disconnect() {
@@ -73,10 +179,7 @@ final class BRDemoBluetoothBridge: NSObject, ObservableObject {
             central.cancelPeripheralConnection(activePeripheral)
         }
         activePeripheral = nil
-        mainWriteCharacteristic = nil
-        mainNotifyCharacteristic = nil
-        flashIdeaWriteCharacteristic = nil
-        flashIdeaNotifyCharacteristic = nil
+        resetPeripheralState()
     }
 
     private func finishConnect(_ result: Result<Void, Error>) {
@@ -132,11 +235,25 @@ extension BRDemoBluetoothBridge: BRBLENotifyControlling {
 extension BRDemoBluetoothBridge: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         notifyMain { $0.bridgeDidUpdateState(central.state) }
+        if central.state == .poweredOn, pendingScan {
+            beginScan()
+            return
+        }
+        if central.state != .poweredOn {
+            notifyStateUnavailable(central.state)
+        }
     }
 
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi RSSI: NSNumber) {
         let name = peripheral.name ?? advertisementData[CBAdvertisementDataLocalNameKey] as? String ?? "Unknown"
-        let device = BRDemoPeripheral(id: peripheral.identifier, name: name, rssi: RSSI.intValue, peripheral: peripheral)
+        let device = BRDemoPeripheral(
+            id: peripheral.identifier,
+            name: name,
+            sn: nil,
+            rssi: RSSI.intValue,
+            serviceUUIDs: advertisedServiceUUIDs(from: advertisementData),
+            peripheral: peripheral
+        )
         notifyMain { $0.bridgeDidDiscover(device) }
     }
 
@@ -160,7 +277,13 @@ extension BRDemoBluetoothBridge: CBPeripheralDelegate {
             finishConnect(.failure(error))
             return
         }
-        peripheral.services?.forEach { service in
+        guard let services = peripheral.services,
+              services.contains(where: { $0.uuid == CBUUID(nsuuid: BRGattUUIDs.mainService) })
+        else {
+            finishConnect(.failure(BRSDKError.invalidState(message: "未发现目标 BLE 服务，请确认选择的是录音卡设备")))
+            return
+        }
+        services.forEach { service in
             let uuids: [CBUUID]
             if service.uuid == CBUUID(nsuuid: BRGattUUIDs.flashIdeaService) {
                 uuids = [CBUUID(nsuuid: BRGattUUIDs.flashIdeaWrite), CBUUID(nsuuid: BRGattUUIDs.flashIdeaNotify)]
@@ -192,6 +315,8 @@ extension BRDemoBluetoothBridge: CBPeripheralDelegate {
         }
         if mainWriteCharacteristic != nil, mainNotifyCharacteristic != nil {
             finishConnect(.success(()))
+        } else if service.uuid == CBUUID(nsuuid: BRGattUUIDs.mainService) {
+            finishConnect(.failure(BRSDKError.invalidState(message: "未发现目标 BLE 特征，请确认设备固件服务 UUID 是否匹配")))
         }
     }
 
@@ -226,5 +351,32 @@ private extension Data {
     var brDemoCommandCode: BRCommandCode? {
         guard count >= 3 else { return nil }
         return BRCommandCode(rawValue: (UInt16(self[1]) << 8) | UInt16(self[2]))
+    }
+}
+
+private extension CBUUID {
+    var brDemoFoundationUUID: UUID? {
+        UUID(uuidString: uuidString)
+    }
+}
+
+private extension CBManagerState {
+    var brDemoDescription: String {
+        switch self {
+        case .unknown:
+            return "unknown"
+        case .resetting:
+            return "resetting"
+        case .unsupported:
+            return "unsupported"
+        case .unauthorized:
+            return "unauthorized"
+        case .poweredOff:
+            return "poweredOff"
+        case .poweredOn:
+            return "poweredOn"
+        @unknown default:
+            return "unknown(\(rawValue))"
+        }
     }
 }
